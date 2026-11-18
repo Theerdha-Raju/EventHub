@@ -11,8 +11,8 @@ A full-stack **College Event Registration & Management System** built with a cle
 | **Frontend** | HTML5 &bull; CSS3 &bull; JavaScript (Vanilla) |
 | **Backend**  | PHP 8.x                        |
 | **Database** | MySQL                          |
-| **Server**   | Apache (XAMPP / Docker)        |
-| **Deploy**   | Render / Railway (Docker)      |
+| **Server**   | Apache (XAMPP / LAMP / WAMP)   |
+| **Database** | MySQL                          |
 
 ---
 
@@ -55,8 +55,6 @@ event-registration/
 ├── setup.php                    ← 1-click DB installer + event seeder
 ├── database.sql                 ← SQL schema + sample events
 │
-├── Dockerfile                   ← Docker config for cloud deployment
-├── render.yaml                  ← Render.com deployment config
 └── .gitignore
 ```
 
@@ -127,16 +125,6 @@ Open `frontend/index.html` directly in your browser to view the full UI:
 | 3 | Web Design & Coding Contest | Coding |
 | 4 | Smartphone Photography Workshop | Workshop |
 | 5 | Blood Donation & Free Health Camp | Community |
-
----
-
-## ☁️ Deploy on Render
-
-1. Push to GitHub
-2. Connect repo to [Render.com](https://render.com)
-3. Set environment variables:
-   - `DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`
-4. Deploy — Dockerfile handles everything automatically
 
 ---
 
