@@ -1,0 +1,6 @@
+.git
+.github
+*.md
+*.pdf
+.DS_Store
+Thumbs.db

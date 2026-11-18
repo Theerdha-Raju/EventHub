@@ -1,0 +1,41 @@
+# Environment & Credentials
+.env
+.env.local
+.env.production
+config/secrets.php
+
+# Sensitive / one-time scripts
+update_events.php
+verify_events.php
+setup_done.txt
+
+# PHP logs
+*.log
+error_log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node (if any)
+node_modules/
+
+# Composer
+vendor/
+composer.lock
+
+# Uploads (user content - exclude from repo)
+uploads/
+
+# PDF reports (generated files)
+EVENT_REGISTRATION_PROJECT_REPORT.pdf
+
+# XAMPP / Apache specific
+.htaccess.bak
