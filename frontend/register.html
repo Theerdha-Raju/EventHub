@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for Event - EventHub</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar no-print">
+    <div class="container">
+        <div class="nav-wrapper">
+            <a href="../index.html" class="brand-logo">
+                <span class="brand-icon">🎟️</span>
+                <span>EventHub</span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html" class="nav-link">📅 Upcoming Events</a></li>
+                    <li><a href="register.html" class="nav-link active">✍️ Register</a></li>
+                    <li><a href="login.html" class="nav-link">🔒 Admin Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <div style="max-width:620px; margin:0 auto;">
+
+            <div style="margin-bottom:28px;">
+                <h1 style="font-size:1.8rem; font-weight:800; color:var(--secondary); margin-bottom:6px;">
+                    ✍️ Event Registration
+                </h1>
+                <p style="color:var(--text-muted);">Fill in your details to register for an event.</p>
+            </div>
+
+            <!-- Alert box (shown on submit error) -->
+            <div id="formAlert" class="alert alert-danger" style="display:none;"></div>
+
+            <div class="card">
+                <form id="registrationForm" novalidate>
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label class="form-label" for="full_name">Full Name <span style="color:var(--danger)">*</span></label>
+                        <input
+                            type="text"
+                            id="full_name"
+                            name="full_name"
+                            class="form-control"
+                            placeholder="e.g. Rahul Sharma"
+                            required
+                            autocomplete="name"
+                        >
+                        <div class="form-feedback" id="full_name_fb"></div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address <span style="color:var(--danger)">*</span></label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="e.g. rahul@college.edu"
+                            required
+                            autocomplete="email"
+                        >
+                        <div class="form-feedback" id="email_fb"></div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Phone Number <span style="color:var(--danger)">*</span></label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            class="form-control"
+                            placeholder="e.g. 9876543210"
+                            required
+                            maxlength="15"
+                            autocomplete="tel"
+                        >
+                        <div class="form-feedback" id="phone_fb"></div>
+                    </div>
+
+                    <!-- Event Selection -->
+                    <div class="form-group">
+                        <label class="form-label" for="event_id">Select Event <span style="color:var(--danger)">*</span></label>
+                        <select id="event_id" name="event_id" class="form-control" required>
+                            <option value="">-- Choose an Event --</option>
+                            <option value="1">Annual Sports Day 2026 — Sports | College Sports Ground</option>
+                            <option value="2">College Music & Dance Night — Cultural | Main Campus Auditorium</option>
+                            <option value="3">Web Design & Coding Contest — Coding | Computer Lab 2</option>
+                            <option value="4">Smartphone Photography Workshop — Workshop | Seminar Hall B</option>
+                            <option value="5">Blood Donation & Free Health Camp — Community | Student Activity Center</option>
+                        </select>
+                        <div class="form-feedback" id="event_fb"></div>
+                    </div>
+
+                    <!-- Department -->
+                    <div class="form-group">
+                        <label class="form-label" for="department">Department <span style="color:var(--danger)">*</span></label>
+                        <select id="department" name="department" class="form-control" required>
+                            <option value="">-- Select Department --</option>
+                            <option>Computer Science</option>
+                            <option>Information Technology</option>
+                            <option>Electronics & Communication</option>
+                            <option>Mechanical Engineering</option>
+                            <option>Civil Engineering</option>
+                            <option>Electrical Engineering</option>
+                            <option>Business Administration</option>
+                            <option>Science</option>
+                            <option>Arts & Humanities</option>
+                            <option>Other</option>
+                        </select>
+                        <div class="form-feedback" id="dept_fb"></div>
+                    </div>
+
+                    <!-- Year of Study -->
+                    <div class="form-group">
+                        <label class="form-label" for="year_of_study">Year of Study <span style="color:var(--danger)">*</span></label>
+                        <select id="year_of_study" name="year_of_study" class="form-control" required>
+                            <option value="">-- Select Year --</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                            <option value="PG">Post Graduate</option>
+                        </select>
+                        <div class="form-feedback" id="year_fb"></div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn btn-primary" style="width:100%; padding:13px; font-size:15px; margin-top:8px;">
+                        Submit Registration &rarr;
+                    </button>
+
+                    <p style="text-align:center; margin-top:16px; font-size:13px; color:var(--text-muted);">
+                        <a href="../index.html">&larr; Back to Events</a>
+                    </p>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer style="background:var(--secondary); color:#94a3b8; text-align:center; padding:24px 20px; margin-top:auto; font-size:13.5px;">
+    <p>🎟️ <strong style="color:#fff;">EventHub</strong> &mdash; Event Registration &amp; Management System</p>
+    <p style="margin-top:6px;">Frontend: HTML &bull; CSS &bull; JavaScript &nbsp;|&nbsp; Backend: PHP &bull; MySQL</p>
+</footer>
+
+<script>
+    // Pre-select event from URL param
+    window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const eventId = params.get('event');
+        if (eventId) {
+            const sel = document.getElementById('event_id');
+            if (sel) sel.value = eventId;
+        }
+    });
+
+    // Validation helpers
+    function showError(id, msg) {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = msg; el.style.color = 'var(--danger)'; }
+    }
+    function clearError(id) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '';
+    }
+
+    // Form submit with validation
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let valid = true;
+
+        // Full Name
+        const name = document.getElementById('full_name').value.trim();
+        if (!name) { showError('full_name_fb', 'Full name is required.'); valid = false; }
+        else if (name.length < 2) { showError('full_name_fb', 'Name must be at least 2 characters.'); valid = false; }
+        else clearError('full_name_fb');
+
+        // Email
+        const email = document.getElementById('email').value.trim();
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) { showError('email_fb', 'Email address is required.'); valid = false; }
+        else if (!emailRe.test(email)) { showError('email_fb', 'Enter a valid email address.'); valid = false; }
+        else clearError('email_fb');
+
+        // Phone
+        const phone = document.getElementById('phone').value.trim();
+        const phoneRe = /^[6-9]\d{9}$/;
+        if (!phone) { showError('phone_fb', 'Phone number is required.'); valid = false; }
+        else if (!phoneRe.test(phone)) { showError('phone_fb', 'Enter a valid 10-digit Indian mobile number.'); valid = false; }
+        else clearError('phone_fb');
+
+        // Event
+        const event = document.getElementById('event_id').value;
+        if (!event) { showError('event_fb', 'Please select an event.'); valid = false; }
+        else clearError('event_fb');
+
+        // Department
+        const dept = document.getElementById('department').value;
+        if (!dept) { showError('dept_fb', 'Please select your department.'); valid = false; }
+        else clearError('dept_fb');
+
+        // Year
+        const year = document.getElementById('year_of_study').value;
+        if (!year) { showError('year_fb', 'Please select your year of study.'); valid = false; }
+        else clearError('year_fb');
+
+        if (valid) {
+            // In real app: form submits to register.php
+            // For frontend demo: redirect to success page
+            const params = new URLSearchParams({
+                name: document.getElementById('full_name').value.trim(),
+                event: document.getElementById('event_id').options[document.getElementById('event_id').selectedIndex].text,
+                email: document.getElementById('email').value.trim()
+            });
+            window.location.href = 'success.html?' + params.toString();
+        }
+    });
+
+    // Live inline validation
+    document.getElementById('full_name').addEventListener('input', function() {
+        if (this.value.trim().length >= 2) clearError('full_name_fb');
+    });
+    document.getElementById('email').addEventListener('input', function() {
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value.trim())) clearError('email_fb');
+    });
+    document.getElementById('phone').addEventListener('input', function() {
+        if (/^[6-9]\d{9}$/.test(this.value.trim())) clearError('phone_fb');
+    });
+</script>
+</body>
+</html>

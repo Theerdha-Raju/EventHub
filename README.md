@@ -1,148 +1,151 @@
-# 🎟️ EventHub - Modern Event Registration & Management System
+# 🎟️ EventHub — Event Registration & Management System
 
-A full-stack, responsive PHP and MySQL web application designed for browsing upcoming events, registering attendees with real-time validation, generating instant confirmation summaries, and providing a password-protected administrative back-office to manage registrations.
-
----
-
-## 🛠️ Mandatory Tech Stack
-- **Backend:** PHP (PHP 7.4 / 8.0+ compatible, PDO, Prepared Statements, Secure Sessions, CSRF protection, Bcrypt hashing)
-- **Frontend:** HTML5, Modern Responsive CSS3 (Glassmorphism & Card Design, Custom Theme, Print Stylesheet), Vanilla JavaScript (No heavy frameworks required)
-- **Database:** MySQL / MariaDB (UTF-8 `utf8mb4_unicode_ci`, Foreign Keys with Cascade)
+A full-stack **College Event Registration & Management System** built with a clean separation between Frontend and Backend.
 
 ---
 
-## 🌟 Core Functionalities & Features
+## 🛠️ Tech Stack
 
-### 1. 🏠 Homepage (`index.php`)
-- **Upcoming Events List:** Displays all active upcoming events fetched directly from MySQL.
-- **Rich Event Cards:** Features event title, category badge, formatted date & time (e.g. *Sat, Dec 5, 2026 at 9:30 AM*), venue/location, seat availability, and descriptive summary.
-- **Live Search & Filter:** Instant real-time filtering by keyword, topic, or venue via JavaScript.
-- **Direct Registration:** Each card includes a prominent **"Register Now &rarr;"** button linking directly to the registration form with the event pre-selected and auto-filled.
-
-### 2. ✍️ Registration Form (`register.php`)
-- **Required Fields:**
-  - **Full Name:** Text field, min 2 characters, trimmed and sanitized.
-  - **Email Address:** RFC-compliant email field with regex and `filter_var` validation.
-  - **Event (Auto-Filled):** Automatically populates and locks the event title when clicked from the homepage. Also supports an intuitive dropdown selector when accessed directly.
-- **Double-Layer Validation:**
-  - **Client-Side (JS):** Real-time feedback on input and blur events, preventing empty inputs or invalid email structures before network transfer.
-  - **Server-Side (PHP):** Strict verification, prevents duplicate submissions (same attendee email registering twice for the same event), XSS sanitization, and CSRF token verification.
-- **Database Persistence:** Inserts valid registrations into the `registrations` table and securely redirects to the confirmation page.
-
-### 3. 🎉 Success Page (`success.php`)
-- **Confirmation Message:** Celebratory badge and personalized greeting.
-- **Registration Reference:** Formatted reference code (e.g., `#EVT-000001`).
-- **Complete Details:** Attendee Full Name, Email, Event Name, Event Date & Time, Venue/Location, and Timestamp.
-- **Print / Save Ticket:** One-click print button formatted with dedicated `@media print` CSS for generating receipts or PDFs.
-
-### 4. 🛡️ Admin Portal (`admin/`)
-- **Admin Authentication (`admin/login.php`):**
-  - Secure session-based authentication with `password_verify()` against bcrypt hashes.
-  - Session regeneration on login to prevent session fixation.
-  - **Default Credentials:**
-    - **Username:** `admin`
-    - **Password:** `admin123`
-- **Registrations Table (`admin/index.php`):**
-  - **Key Metrics:** Stat cards displaying total registrations, active events, and unique attendees.
-  - **Instant Search:** Live table search filtering across registrant names, emails, and event titles.
-  - **Required Columns:**
-    1. **ID:** Registration unique identifier.
-    2. **Name:** Attendee's full name.
-    3. **Email:** Clickable email address.
-    4. **Event:** Styled badge displaying the event title.
-    5. **Date Registered:** Formatted date and time.
-    6. **Action (View, delete):**
-       - **👁️ View:** Opens an interactive modal dialog displaying complete registration and event breakdown.
-       - **🗑️ Delete:** Form-based deletion guarded with CSRF protection and a JavaScript confirmation dialog.
-- **Admin Actions:**
-  - `admin/delete.php`: Deletes the record safely and redirects back with a flash alert.
-  - `admin/logout.php`: Destroys admin session safely.
-
-### 5. ⚙️ Automated Database Setup & Seeder (`setup.php`)
-- **1-Click Web Installer:** Automatically connects to MySQL, creates the `event_management` database, executes the table schemas, seeds 5 rich sample events, and creates the admin account.
+| Layer        | Technologies Used              |
+|--------------|-------------------------------|
+| **Frontend** | HTML5 &bull; CSS3 &bull; JavaScript (Vanilla) |
+| **Backend**  | PHP 8.x                        |
+| **Database** | MySQL                          |
+| **Server**   | Apache (XAMPP / Docker)        |
+| **Deploy**   | Render / Railway (Docker)      |
 
 ---
 
-## 📁 Project Directory Structure
+## 📁 Project Structure
 
 ```
 event-registration/
 │
+├── frontend/                    ← Pure HTML + CSS + JS (no PHP needed)
+│   ├── index.html               ← Browse events with live search
+│   ├── register.html            ← Registration form with JS validation
+│   ├── success.html             ← Printable confirmation receipt
+│   └── admin/
+│       ├── login.html           ← Admin login (frontend demo)
+│       └── dashboard.html       ← Admin dashboard with table, modals, filters
+│
+├── assets/                      ← Shared static assets
+│   ├── css/style.css            ← Full custom CSS (no Bootstrap/Tailwind)
+│   └── js/
+│       ├── main.js              ← Public page JS (search, validation)
+│       └── admin.js             ← Admin JS (table filter, modal, delete)
+│
 ├── config/
-│   └── db.php                  # PDO database connection, base URL handler & error fallback
+│   └── db.php                   ← PDO database connection (PHP backend)
 │
 ├── includes/
-│   ├── header.php              # Global navigation bar & flash alert handler
-│   ├── footer.php              # Global footer & scripts
-│   └── functions.php           # Helper functions (CSRF, sanitization, dates, queries)
+│   ├── header.php               ← Shared HTML header template
+│   ├── footer.php               ← Shared HTML footer template
+│   └── functions.php            ← Session, CSRF, flash, sanitize helpers
 │
-├── assets/
-│   ├── css/
-│   │   └── style.css           # Complete modern CSS design with print styles
-│   └── js/
-│       ├── main.js             # Client-side validation & live event search
-│       └── admin.js            # Admin table filter, modal view & delete confirmation
+├── admin/                       ← PHP Admin backend pages
+│   ├── login.php                ← Bcrypt auth + session
+│   ├── logout.php               ← Session destroy
+│   ├── index.php                ← Registrations management table
+│   └── delete.php               ← CSRF-protected delete handler
 │
-├── admin/
-│   ├── login.php               # Admin login screen
-│   ├── logout.php              # Admin logout handler
-│   ├── index.php               # Admin registrations table (ID, Name, Email, Event, Date, Action)
-│   └── delete.php              # CSRF-protected registration delete action
+├── index.php                    ← Public homepage (PHP + MySQL)
+├── register.php                 ← Registration form processor (PHP)
+├── success.php                  ← Confirmation page (PHP)
+├── setup.php                    ← 1-click DB installer + event seeder
+├── database.sql                 ← SQL schema + sample events
 │
-├── index.php                   # Homepage with list of upcoming events
-├── register.php                # Registration form with auto-filled event
-├── success.php                 # Registration confirmation & summary receipt
-├── setup.php                   # 1-Click database setup & seeder
-├── database.sql                # Raw SQL schema & seed script
-└── README.md                   # Complete documentation
+├── Dockerfile                   ← Docker config for cloud deployment
+├── render.yaml                  ← Render.com deployment config
+└── .gitignore
 ```
 
 ---
 
-## 🚀 Quickstart & How to Run
+## 🌟 Features
 
-### Method 1: Using XAMPP (Recommended)
-1. **Start XAMPP:**
-   - Open **XAMPP Control Panel**.
-   - Click **Start** for **Apache** and **MySQL**.
-2. **Access in Browser:**
-   - The project is already placed in your XAMPP web root:
-     `C:\xampp\htdocs\event-registration\`
-   - Open your browser to:
-     ```
-     http://localhost/event-registration/setup.php
-     ```
-   - Click **"🚀 Initialize Database Now"** (creates database, tables, and seed data automatically).
-3. **Explore the Website:**
-   - **Public Homepage:** `http://localhost/event-registration/index.php`
-   - **Register an Attendee:** Click any event's "Register Now" button or visit `http://localhost/event-registration/register.php`
-   - **Admin Portal:** `http://localhost/event-registration/admin/login.php`
-     - **Username:** `admin`
-     - **Password:** `admin123`
+### Public Frontend
+- 🎴 **Event Cards** — Browse all events with category badges & dates
+- 🔍 **Live Search** — Instant search by name, category, or venue (JS)
+- ✍️ **Registration Form** — Dual validation (JS + PHP), department & year selection
+- 🖨️ **Print Receipt** — Printable confirmation with print CSS media queries
+
+### Admin Backend
+- 🔐 **Secure Login** — Bcrypt password hashing, CSRF tokens, session fixation prevention
+- 📊 **KPI Dashboard** — Total registrations, events, today's count
+- 📋 **Registrations Table** — Search/filter, view modal, delete with confirmation
+- 🛡️ **CSRF Protection** — All POST forms protected with CSRF tokens
 
 ---
 
-### Method 2: Manual Database Import via phpMyAdmin
-If you prefer importing the SQL manually:
-1. Open **phpMyAdmin** (`http://localhost/phpmyadmin`).
-2. Click the **Import** tab.
-3. Select `database.sql` from the `event-registration` folder.
-4. Click **Go** / **Import**.
+## 🚀 Quick Start (XAMPP)
+
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/Theerdha-Raju/EventHub.git
+   cd EventHub
+   ```
+
+2. **Copy to XAMPP htdocs:**
+   ```
+   C:\xampp\htdocs\event-registration\
+   ```
+
+3. **Run the setup installer:**
+   Open in browser: `http://localhost/event-registration/setup.php`
+   - Creates database, tables, and seeds 5 sample events automatically.
+
+4. **Open the app:**
+   - Public site: `http://localhost/event-registration/`
+   - Admin login: `http://localhost/event-registration/admin/login.php`
 
 ---
 
-### Method 3: Using PHP Built-in Server
-If running standalone:
-```bash
-cd "C:\xampp\htdocs\event-registration"
-"C:\xampp\php\php.exe" -S localhost:8000
-```
-Then visit `http://localhost:8000/setup.php` in your browser.
+## 🌐 Frontend Demo (No Server Needed)
+
+Open `frontend/index.html` directly in your browser to view the full UI:
+- Browse events, fill registration form, view success receipt
+- Admin login → dashboard (demo credentials: `admin` / `admin123`)
 
 ---
 
-## 🔒 Security Highlights
-- **Prepared Statements (PDO):** Zero raw SQL interpolation protects against SQL injection.
-- **XSS Prevention:** All user inputs and database outputs are escaped using `htmlspecialchars()`.
-- **CSRF Protection:** State-changing requests (Registration submission and Admin Deletion) require session CSRF tokens.
-- **Bcrypt Password Storage:** Admin passwords hashed using PHP's native `password_hash()` and verified via `password_verify()`.
+## 🗄️ Database
+
+**Database:** `event_management`
+
+| Table           | Description                        |
+|-----------------|------------------------------------|
+| `events`        | 5 sample college events            |
+| `registrations` | Student registration records       |
+| `admins`        | Admin accounts (bcrypt passwords)  |
+
+**Sample Events:**
+| # | Event | Category |
+|---|-------|----------|
+| 1 | Annual Sports Day 2026 | Sports |
+| 2 | College Music & Dance Night | Cultural |
+| 3 | Web Design & Coding Contest | Coding |
+| 4 | Smartphone Photography Workshop | Workshop |
+| 5 | Blood Donation & Free Health Camp | Community |
+
+---
+
+## ☁️ Deploy on Render
+
+1. Push to GitHub
+2. Connect repo to [Render.com](https://render.com)
+3. Set environment variables:
+   - `DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`
+4. Deploy — Dockerfile handles everything automatically
+
+---
+
+## 👤 Author
+
+**Theerdha Raju**  
+📧 theerdharaju4@gmail.com  
+🔗 [GitHub: Theerdha-Raju](https://github.com/Theerdha-Raju)
+
+---
+
+> Built as a college project demonstrating full-stack web development with PHP and MySQL.

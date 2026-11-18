@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EventHub</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:16px; margin-bottom:28px; }
+        .kpi-card  { background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px 16px; text-align:center; box-shadow:var(--shadow-sm); }
+        .kpi-num   { font-size:2rem; font-weight:800; color:var(--primary); }
+        .kpi-label { font-size:12.5px; color:var(--text-muted); margin-top:4px; }
+        .tbl th    { background:var(--bg-surface); font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); padding:10px 14px; text-align:left; }
+        .tbl td    { padding:12px 14px; font-size:14px; border-bottom:1px solid var(--border-color); vertical-align:middle; }
+        .tbl tr:last-child td { border-bottom:none; }
+        .tbl tr:hover td { background:var(--bg-surface); }
+        .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11.5px; font-weight:600; }
+        .modal-bg  { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; align-items:center; justify-content:center; }
+        .modal-bg.open { display:flex; }
+        .modal-box { background:#fff; border-radius:var(--radius-lg); padding:28px; max-width:480px; width:90%; box-shadow:var(--shadow-xl); }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="container">
+        <div class="nav-wrapper">
+            <a href="../../frontend/index.html" class="brand-logo">
+                <span class="brand-icon">🎟️</span>
+                <span>EventHub</span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../../frontend/index.html" class="nav-link">📅 Events</a></li>
+                    <li>
+                        <span class="nav-link">
+                            <span class="admin-badge-nav">🛡️ Admin Panel</span>
+                        </span>
+                    </li>
+                    <li>
+                        <a href="login.html" onclick="sessionStorage.clear()" class="btn btn-secondary btn-sm" style="color:var(--danger);">
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+
+        <!-- Page Title -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+            <div>
+                <h1 style="font-size:1.6rem; font-weight:800; color:var(--secondary); margin-bottom:4px;">
+                    🛡️ Admin Dashboard
+                </h1>
+                <p style="color:var(--text-muted); font-size:13.5px;">Manage all event registrations</p>
+            </div>
+            <div id="adminWelcome" style="font-size:13.5px; color:var(--text-muted);"></div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-num" id="kpiTotal">5</div>
+                <div class="kpi-label">Total Registrations</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-num" style="color:var(--success);">5</div>
+                <div class="kpi-label">Total Events</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-num" style="color:var(--warning);">3</div>
+                <div class="kpi-label">Upcoming Events</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-num" style="color:var(--info);">2</div>
+                <div class="kpi-label">Today's Registrations</div>
+            </div>
+        </div>
+
+        <!-- Registrations Table -->
+        <div class="card" style="padding:0; overflow:hidden;">
+            <div style="padding:18px 20px 14px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <h2 style="font-size:1rem; font-weight:700; color:var(--secondary); margin:0;">📋 All Registrations</h2>
+                <input type="text" id="tableSearch" class="form-control" placeholder="🔍 Search registrations..." oninput="filterTable()" style="max-width:260px; padding:8px 12px; font-size:13px;">
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table class="tbl" style="width:100%; border-collapse:collapse;" id="regTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Event</th>
+                            <th>Department</th>
+                            <th>Registered On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="regTableBody">
+                        <!-- Rows filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- View Modal -->
+<div class="modal-bg" id="viewModal">
+    <div class="modal-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3 style="font-size:1.1rem; font-weight:700; color:var(--secondary); margin:0;">👤 Registration Details</h3>
+            <button onclick="closeModal()" style="background:none; border:none; font-size:22px; cursor:pointer; color:var(--text-muted);">&times;</button>
+        </div>
+        <table style="width:100%; font-size:14px; border-collapse:collapse;" id="modalTable">
+        </table>
+        <div style="margin-top:20px; text-align:right;">
+            <button onclick="closeModal()" class="btn btn-secondary">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-bg" id="deleteModal">
+    <div class="modal-box" style="max-width:380px;">
+        <h3 style="font-size:1.1rem; font-weight:700; color:var(--danger); margin-bottom:12px;">🗑️ Confirm Delete</h3>
+        <p style="color:var(--text-muted); font-size:14px;">Are you sure you want to delete this registration? This action cannot be undone.</p>
+        <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+            <button onclick="closeDeleteModal()" class="btn btn-secondary">Cancel</button>
+            <button onclick="confirmDelete()" class="btn" style="background:var(--danger); color:#fff;">Yes, Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer style="background:var(--secondary); color:#94a3b8; text-align:center; padding:24px 20px; margin-top:auto; font-size:13.5px;">
+    <p>🎟️ <strong style="color:#fff;">EventHub</strong> &mdash; Event Registration &amp; Management System</p>
+    <p style="margin-top:6px;">Frontend: HTML &bull; CSS &bull; JavaScript &nbsp;|&nbsp; Backend: PHP &bull; MySQL</p>
+</footer>
+
+<script>
+    // Auth guard
+    if (!sessionStorage.getItem('admin_logged_in')) {
+        window.location.href = 'login.html';
+    }
+    document.getElementById('adminWelcome').textContent =
+        'Welcome, ' + (sessionStorage.getItem('admin_name') || 'Administrator');
+
+    // Sample registrations data (in real app: fetched from PHP/MySQL backend)
+    const registrations = [
+        { id:1, name:'Rahul Sharma',    email:'rahul@college.edu',   event:'Annual Sports Day 2026',            dept:'Computer Science',    year:'2nd Year', date:'18 Nov 2026, 09:12 AM' },
+        { id:2, name:'Priya Nair',      email:'priya@college.edu',   event:'College Music & Dance Night',       dept:'Arts & Humanities',   year:'3rd Year', date:'18 Nov 2026, 10:05 AM' },
+        { id:3, name:'Arun Kumar',      email:'arun@college.edu',    event:'Web Design & Coding Contest',       dept:'Information Technology', year:'4th Year', date:'17 Nov 2026, 03:45 PM' },
+        { id:4, name:'Sneha Reddy',     email:'sneha@college.edu',   event:'Smartphone Photography Workshop',   dept:'Science',             year:'1st Year', date:'17 Nov 2026, 04:20 PM' },
+        { id:5, name:'Mohammed Faiz',   email:'faiz@college.edu',    event:'Blood Donation & Free Health Camp', dept:'Mechanical Engineering', year:'3rd Year', date:'16 Nov 2026, 11:00 AM' },
+    ];
+
+    const eventBadgeColors = {
+        'Annual Sports Day 2026':            { bg:'var(--warning-light)',  color:'var(--warning)' },
+        'College Music & Dance Night':       { bg:'#fce7f3',               color:'#db2777' },
+        'Web Design & Coding Contest':       { bg:'var(--primary-light)',  color:'var(--primary)' },
+        'Smartphone Photography Workshop':   { bg:'var(--success-light)',  color:'var(--success)' },
+        'Blood Donation & Free Health Camp': { bg:'var(--danger-light)',   color:'var(--danger)' },
+    };
+
+    let deleteTargetId = null;
+
+    function renderTable(data) {
+        const tbody = document.getElementById('regTableBody');
+        document.getElementById('kpiTotal').textContent = data.length;
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">No registrations found.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.map((r, i) => {
+            const c = eventBadgeColors[r.event] || { bg:'var(--bg-surface)', color:'var(--text-muted)' };
+            return `<tr data-id="${r.id}">
+                <td style="font-weight:600;color:var(--text-muted);">#${i + 1}</td>
+                <td><strong>${r.name}</strong></td>
+                <td style="color:var(--text-muted);">${r.email}</td>
+                <td><span class="badge" style="background:${c.bg};color:${c.color};">${r.event}</span></td>
+                <td>${r.dept}</td>
+                <td style="color:var(--text-muted);font-size:13px;">${r.date}</td>
+                <td style="display:flex;gap:6px;">
+                    <button onclick="viewReg(${r.id})" class="btn btn-secondary btn-sm" style="font-size:12px;padding:5px 10px;">👁 View</button>
+                    <button onclick="deleteReg(${r.id})" class="btn btn-sm" style="font-size:12px;padding:5px 10px;background:var(--danger-light);color:var(--danger);">🗑</button>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    function filterTable() {
+        const q = document.getElementById('tableSearch').value.toLowerCase();
+        const filtered = registrations.filter(r =>
+            r.name.toLowerCase().includes(q) ||
+            r.email.toLowerCase().includes(q) ||
+            r.event.toLowerCase().includes(q) ||
+            r.dept.toLowerCase().includes(q)
+        );
+        renderTable(filtered);
+    }
+
+    function viewReg(id) {
+        const r = registrations.find(x => x.id === id);
+        if (!r) return;
+        document.getElementById('modalTable').innerHTML = [
+            ['👤 Name', r.name], ['📧 Email', r.email],
+            ['🎯 Event', r.event], ['🏛️ Department', r.dept],
+            ['📚 Year', r.year], ['📅 Registered On', r.date]
+        ].map(([k, v]) => `
+            <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:9px 0;color:var(--text-muted);width:40%;">${k}</td>
+                <td style="padding:9px 0;font-weight:600;color:var(--secondary);">${v}</td>
+            </tr>`).join('');
+        document.getElementById('viewModal').classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('viewModal').classList.remove('open');
+    }
+
+    function deleteReg(id) {
+        deleteTargetId = id;
+        document.getElementById('deleteModal').classList.add('open');
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.remove('open');
+        deleteTargetId = null;
+    }
+
+    function confirmDelete() {
+        if (deleteTargetId !== null) {
+            const idx = registrations.findIndex(r => r.id === deleteTargetId);
+            if (idx > -1) registrations.splice(idx, 1);
+        }
+        closeDeleteModal();
+        renderTable(registrations);
+    }
+
+    // Close modals on backdrop click
+    document.getElementById('viewModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+        if (e.target === this) closeDeleteModal();
+    });
+
+    // Initial render
+    renderTable(registrations);
+</script>
+</body>
+</html>

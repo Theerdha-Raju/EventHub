@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub - Upcoming Events</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar no-print">
+    <div class="container">
+        <div class="nav-wrapper">
+            <a href="index.html" class="brand-logo">
+                <span class="brand-icon">🎟️</span>
+                <span>EventHub</span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link active">📅 Upcoming Events</a></li>
+                    <li><a href="register.html" class="nav-link">✍️ Register</a></li>
+                    <li><a href="admin/login.html" class="nav-link">🔒 Admin Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="main-content">
+    <div class="container">
+
+        <!-- Hero Banner -->
+        <div style="text-align:center; padding: 40px 0 30px;">
+            <h1 style="font-size:2.2rem; font-weight:800; color:var(--secondary); margin-bottom:10px;">
+                🎉 Upcoming Events
+            </h1>
+            <p style="color:var(--text-muted); font-size:1.05rem; max-width:520px; margin:0 auto;">
+                Explore and register for exciting college events happening near you.
+            </p>
+        </div>
+
+        <!-- Search Bar -->
+        <div style="max-width:480px; margin:0 auto 36px;">
+            <input
+                type="text"
+                id="searchInput"
+                class="form-control"
+                placeholder="🔍  Search events by name, category or venue..."
+                oninput="filterEvents()"
+                style="font-size:15px; padding:12px 16px;"
+            >
+        </div>
+
+        <!-- Event Cards Grid -->
+        <div class="events-grid" id="eventsGrid">
+
+            <!-- Card 1 -->
+            <div class="event-card" data-search="annual sports day 2026 sports college sports ground">
+                <div class="event-card-header">
+                    <span class="event-badge" style="background:var(--warning-light);color:var(--warning);">🏅 Sports</span>
+                    <span style="font-size:12px;color:var(--text-muted);">May 10, 2026</span>
+                </div>
+                <h3 class="event-title">Annual Sports Day 2026</h3>
+                <p class="event-meta">📍 College Sports Ground</p>
+                <p class="event-desc">
+                    Join us for a fun-filled day of athletics, team sports, and friendly competitions. Open to all students across all departments.
+                </p>
+                <a href="register.html?event=1" class="btn btn-primary" style="width:100%; text-align:center;">
+                    ✍️ Register Now
+                </a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="event-card" data-search="college music dance night cultural main campus auditorium">
+                <div class="event-card-header">
+                    <span class="event-badge" style="background:#fce7f3;color:#db2777;">🎭 Cultural</span>
+                    <span style="font-size:12px;color:var(--text-muted);">May 20, 2026</span>
+                </div>
+                <h3 class="event-title">College Music & Dance Night</h3>
+                <p class="event-meta">📍 Main Campus Auditorium</p>
+                <p class="event-desc">
+                    A spectacular evening of music performances, dance showcases, and cultural acts by talented students. Everyone welcome!
+                </p>
+                <a href="register.html?event=2" class="btn btn-primary" style="width:100%; text-align:center;">
+                    ✍️ Register Now
+                </a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="event-card" data-search="web design coding contest coding computer lab 2">
+                <div class="event-card-header">
+                    <span class="event-badge" style="background:var(--primary-light);color:var(--primary);">💻 Coding</span>
+                    <span style="font-size:12px;color:var(--text-muted);">Jun 5, 2026</span>
+                </div>
+                <h3 class="event-title">Web Design & Coding Contest</h3>
+                <p class="event-meta">📍 Computer Lab 2</p>
+                <p class="event-desc">
+                    Show off your programming skills! Build creative websites and apps in this exciting coding competition with prizes for winners.
+                </p>
+                <a href="register.html?event=3" class="btn btn-primary" style="width:100%; text-align:center;">
+                    ✍️ Register Now
+                </a>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="event-card" data-search="smartphone photography workshop workshop seminar hall b">
+                <div class="event-card-header">
+                    <span class="event-badge" style="background:var(--success-light);color:var(--success);">📸 Workshop</span>
+                    <span style="font-size:12px;color:var(--text-muted);">Jun 15, 2026</span>
+                </div>
+                <h3 class="event-title">Smartphone Photography Workshop</h3>
+                <p class="event-meta">📍 Seminar Hall B</p>
+                <p class="event-desc">
+                    Learn professional photography techniques using just your smartphone. Covers composition, lighting, editing and more.
+                </p>
+                <a href="register.html?event=4" class="btn btn-primary" style="width:100%; text-align:center;">
+                    ✍️ Register Now
+                </a>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="event-card" data-search="blood donation free health camp community student activity center">
+                <div class="event-card-header">
+                    <span class="event-badge" style="background:var(--danger-light);color:var(--danger);">❤️ Community</span>
+                    <span style="font-size:12px;color:var(--text-muted);">Jul 1, 2026</span>
+                </div>
+                <h3 class="event-title">Blood Donation & Free Health Camp</h3>
+                <p class="event-meta">📍 Student Activity Center</p>
+                <p class="event-desc">
+                    Give the gift of life! Participate in our blood donation drive and free health checkup camp for students and staff.
+                </p>
+                <a href="register.html?event=5" class="btn btn-primary" style="width:100%; text-align:center;">
+                    ✍️ Register Now
+                </a>
+            </div>
+
+        </div>
+
+        <!-- No results message -->
+        <div id="noResults" style="display:none; text-align:center; padding:60px 20px;">
+            <div style="font-size:48px; margin-bottom:16px;">🔍</div>
+            <h3 style="color:var(--text-muted); font-weight:600;">No events found</h3>
+            <p style="color:var(--text-light); margin-top:8px;">Try a different search keyword.</p>
+        </div>
+
+    </div>
+</main>
+
+<!-- Footer -->
+<footer style="background:var(--secondary); color:#94a3b8; text-align:center; padding:24px 20px; margin-top:auto; font-size:13.5px;">
+    <p>🎟️ <strong style="color:#fff;">EventHub</strong> &mdash; Event Registration &amp; Management System</p>
+    <p style="margin-top:6px;">Frontend: HTML &bull; CSS &bull; JavaScript &nbsp;|&nbsp; Backend: PHP &bull; MySQL</p>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+    // Live search filter
+    function filterEvents() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const cards = document.querySelectorAll('.event-card');
+        let visible = 0;
+        cards.forEach(card => {
+            const text = card.dataset.search || card.innerText.toLowerCase();
+            if (text.includes(q)) {
+                card.style.display = '';
+                visible++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    }
+</script>
+</body>
+</html>
